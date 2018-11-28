@@ -31,9 +31,9 @@ Sub-System
 
 # Environment variable requirements
 
-All make file looks for environment variables namely `AWS_PROFILE`, `AWS_REGION` and `AWS_LABEL`.
+All make file looks for environment variables namely `AWS_PROFILE`, `AWS_REGION` and `ENV_LABEL`.
 While AWS_PROFILE and AWS_REGION are quite straight forward, basically which AWS profile and region should be used to create stacks,
-AWS_LABEL on the otherhand is a personalization label that can be added to create stacks. It can be any string that best describes the user/owner of the stack; `beta`, `staging`, `rikesh` are all valid labels. This helps to isolate stacks and stack resources from each other and allows us to create multiple stackset for diffeerent audiende at the same time.
+ENV_LABEL on the otherhand is a personalization label that can be added to create stacks. It can be any string that best describes the user/owner of the stack; `beta`, `staging`, `rikesh` are all valid labels. This helps to isolate stacks and stack resources from each other and allows us to create multiple stackset for diffeerent audiende at the same time.
 
 # Setup and Deployments
 
@@ -64,7 +64,7 @@ AWS_LABEL on the otherhand is a personalization label that can be added to creat
   # export our required environment variables
   # export AWS_PROFILE=team0
   # export AWS_REGION=us-east-1
-  # export AWS_LABEL=alpha
+  # export ENV_LABEL=alpha
 
   # setup service specific resources
   $ make create resources
