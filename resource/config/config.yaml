@@ -1,0 +1,14 @@
+Facilities:
+  HttpServer: true
+  JsonWs: true
+  RuntimeCtl: true
+HttpServer:
+  Address: 0.0.0.0
+  Port: 3000
+  AccessLogging: true
+  AccessLog:
+    LogLinePreset: "framework"
+ApplicationLogger:
+  GlobalLogLevel: INFO
+Service:
+  Name: Go Granitic Sample Service

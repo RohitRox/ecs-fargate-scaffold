@@ -1,0 +1,13 @@
+packages:
+  - github.com/graniticio/granitic/ws/handler
+  - ../endpoint
+components:
+  statusLogic:
+    type: endpoint.StatusLogic
+    ServiceName: "conf:Service.Name"
+  statusHandler:
+    type: handler.WsHandler
+    HttpMethod: GET
+    Logic: ref:statusLogic
+    PathPattern: "^/service(-|_)status[/]?$"
+    AllowDirectHTTPAccess: true
