@@ -10,6 +10,7 @@ ENV WORKSPACE=$GOPATH/src/service
 WORKDIR $WORKSPACE
 
 ADD ./install-packages.sh .
+RUN chmod +x ./install-packages.sh
 RUN ./install-packages.sh
 
 ADD . $WORKSPACE
