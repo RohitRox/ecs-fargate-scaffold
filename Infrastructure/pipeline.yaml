@@ -203,6 +203,34 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuild
 
+        - Name: ManualApproval
+          Actions:
+            - Name: Approve
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: "1"
+                Provider: Manual
+
+        # - Name: ECSDeploy
+        #   Actions:
+        #     - Name: Deploy
+        #       RunOrder: 1
+        #       InputArtifacts:
+        #       - Name: BuildArtifacts
+        #       ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: "1"
+        #         Provider: CloudFormation
+        #       Configuration:
+        #         StackName: !Ref StackName
+        #         ActionMode: CREATE_UPDATE
+        #         RoleArn: !GetAtt CloudFormationIAMRole.Arn
+        #         Capabilities: CAPABILITY_NAMED_IAM
+        #         TemplatePath: BuildArtifacts::service.yaml
+        #         TemplateConfiguration: BuildArtifacts::release.json
+
   CodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -232,8 +260,6 @@ Resources:
                 - docker build --tag "${DOCKER_REPO_URL}:${SERVICE_VERSION}" .
                 - echo "Pushing ${DOCKER_REPO_URL}:${SERVICE_VERSION}"
                 - docker push "${DOCKER_REPO_URL}:${SERVICE_VERSION}"
-            post_build:
-              commands:
                 - cd $WORKDIR
                 - echo "Creating release.json ..."
                 - printf '{"Parameters":{"ServiceVersion":"%s"}}' $SERVICE_VERSION > release.json
