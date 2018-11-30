@@ -93,6 +93,8 @@ Resources:
             - logs:*
             - elasticloadbalancing:*
             - ec2:*
+            - application-autoscaling:*
+            - cloudwatch:*
             Effect: Allow
             Resource: "*"
           - Action:
