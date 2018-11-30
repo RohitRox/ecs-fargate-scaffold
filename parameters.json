@@ -1,0 +1,1 @@
+{"Parameters": {"EnvLabel": "alpha","EnvType": "nonproduction","SubSystem": "hss","ServiceName": "scaffold-service","ServiceVersion": "0.0.0","DockerRepoUrl": "574574226067.dkr.ecr.us-east-1.amazonaws.com/alpha-hss-scaffold-service","AppPort": "3000","UrlPattern": "/*","Priority": "10","DesiredCount": "2","HealthCheckPath": "/service-status"}}

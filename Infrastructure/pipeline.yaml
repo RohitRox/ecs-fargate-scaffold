@@ -44,6 +44,9 @@ Parameters:
     Type: String
     Default: ./
 
+  StackName:
+    Type: String
+
 Resources:
   CloudFormationIAMRole:
     Type: AWS::IAM::Role
@@ -212,25 +215,24 @@ Resources:
                 Version: "1"
                 Provider: Manual
 
-        # - Name: ECSDeploy
-        #   Actions:
-        #     - Name: Deploy
-        #       RunOrder: 1
-        #       InputArtifacts:
-        #       - Name: BuildArtifacts
-        #       ActionTypeId:
-        #         Category: Deploy
-        #         Owner: AWS
-        #         Version: "1"
-        #         Provider: CloudFormation
-        #       Configuration:
-        #         StackName: !Ref StackName
-        #         ActionMode: CREATE_UPDATE
-        #         RoleArn: !GetAtt CloudFormationIAMRole.Arn
-        #         Capabilities: CAPABILITY_NAMED_IAM
-        #         TemplatePath: BuildArtifacts::service.yaml
-        #         TemplateConfiguration: BuildArtifacts::release.json
-
+        - Name: ECSDeploy
+          Actions:
+            - Name: Deploy
+              RunOrder: 1
+              InputArtifacts:
+              - Name: BuildArtifacts
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: "1"
+                Provider: CloudFormation
+              Configuration:
+                StackName: !Ref StackName
+                ActionMode: CREATE_UPDATE
+                RoleArn: !GetAtt CloudFormationIAMRole.Arn
+                Capabilities: CAPABILITY_NAMED_IAM
+                TemplatePath: BuildArtifacts::service.yaml
+                TemplateConfiguration: BuildArtifacts::parameters.json
   CodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -267,8 +269,8 @@ Resources:
                 - echo "Build complete."
           artifacts:
             files:
-              - release.json
-              - Infrastructure/*
+              - parameters.json
+              - Infrastructure/service.yaml
             discard-paths: yes
       Environment:
         Type: LINUX_CONTAINER

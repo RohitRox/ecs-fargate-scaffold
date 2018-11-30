@@ -17,7 +17,8 @@ GIT_BRANCH:=master
 SOURCE_PATH:=./
 
 # Latest service version
-SERVICE_VERSION=0.0.0
+# Should be removed
+SERVICE_VERSION=0.0.1
 
 STACK_NAME:=$(ENV_LABEL)-$(SUB_SYSTEM)-$(SERVICE_NAME)
 IMAGE_NAME:=$(ENV_LABEL)-$(SUB_SYSTEM)-$(SERVICE_NAME)
@@ -41,8 +42,10 @@ create-service:
 update-service:
 	aws cloudformation update-stack --stack-name $(STACK_NAME) --template-body file://Infrastructure/service.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --capabilities CAPABILITY_IAM --parameters ParameterKey=EnvLabel,UsePreviousValue=true ParameterKey=EnvType,UsePreviousValue=true ParameterKey=SubSystem,UsePreviousValue=true ParameterKey=ServiceName,UsePreviousValue=true ParameterKey=ServiceVersion,ParameterValue=$(SERVICE_VERSION) ParameterKey=DockerRepoUrl,UsePreviousValue=true ParameterKey=AppPort,ParameterValue=$(APP_PORT) ParameterKey=UrlPattern,ParameterValue=$(URL_PATTERN) ParameterKey=Priority,ParameterValue=$(PRIORITY) ParameterKey=DesiredCount,ParameterValue=$(DESIRED_COUNT) ParameterKey=HealthCheckPath,ParameterValue=$(HEALTH_CHECK_PATH)
 create-pipeline:
-	aws cloudformation create-stack --stack-name $(STACK_NAME)-pipeline --template-body file://Infrastructure/pipeline.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=EnvLabel,ParameterValue=$(ENV_LABEL) ParameterKey=EnvType,ParameterValue=$(ENV_TYPE) ParameterKey=SubSystem,ParameterValue=$(SUB_SYSTEM) ParameterKey=ServiceName,ParameterValue=$(SERVICE_NAME) ParameterKey=GitUser,ParameterValue=$(GIT_USER) ParameterKey=GitRepo,ParameterValue=$(GIT_REPO) ParameterKey=GitBranch,ParameterValue=$(GIT_BRANCH) ParameterKey=GitOauthToken,ParameterValue=$(GIT_OAUTH_TOKEN) ParameterKey=DockerRepoUrl,ParameterValue=$(ECR_ADDR) ParameterKey=SourcePath,ParameterValue=$(SOURCE_PATH)
+	aws cloudformation create-stack --stack-name $(STACK_NAME)-pipeline --template-body file://Infrastructure/pipeline.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=EnvLabel,ParameterValue=$(ENV_LABEL) ParameterKey=EnvType,ParameterValue=$(ENV_TYPE) ParameterKey=SubSystem,ParameterValue=$(SUB_SYSTEM) ParameterKey=ServiceName,ParameterValue=$(SERVICE_NAME) ParameterKey=GitUser,ParameterValue=$(GIT_USER) ParameterKey=GitRepo,ParameterValue=$(GIT_REPO) ParameterKey=GitBranch,ParameterValue=$(GIT_BRANCH) ParameterKey=GitOauthToken,ParameterValue=$(GIT_OAUTH_TOKEN) ParameterKey=DockerRepoUrl,ParameterValue=$(ECR_ADDR) ParameterKey=SourcePath,ParameterValue=$(SOURCE_PATH) ParameterKey=StackName,ParameterValue=$(STACK_NAME)
 update-pipeline:
-	aws cloudformation update-stack --stack-name $(STACK_NAME)-pipeline --template-body file://Infrastructure/pipeline.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=EnvLabel,UsePreviousValue=true ParameterKey=EnvType,UsePreviousValue=true ParameterKey=SubSystem,UsePreviousValue=true ParameterKey=ServiceName,UsePreviousValue=true ParameterKey=GitUser,ParameterValue=$(GIT_USER) ParameterKey=GitRepo,ParameterValue=$(GIT_REPO) ParameterKey=GitBranch,ParameterValue=$(GIT_BRANCH) ParameterKey=GitOauthToken,UsePreviousValue=true ParameterKey=DockerRepoUrl,ParameterValue=$(ECR_ADDR) ParameterKey=SourcePath,UsePreviousValue=true
+	aws cloudformation update-stack --stack-name $(STACK_NAME)-pipeline --template-body file://Infrastructure/pipeline.yaml --profile $(AWS_PROFILE) --region $(AWS_REGION) --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=EnvLabel,UsePreviousValue=true ParameterKey=EnvType,UsePreviousValue=true ParameterKey=SubSystem,UsePreviousValue=true ParameterKey=ServiceName,UsePreviousValue=true ParameterKey=GitUser,ParameterValue=$(GIT_USER) ParameterKey=GitRepo,ParameterValue=$(GIT_REPO) ParameterKey=GitBranch,ParameterValue=$(GIT_BRANCH) ParameterKey=GitOauthToken,UsePreviousValue=true ParameterKey=DockerRepoUrl,ParameterValue=$(ECR_ADDR) ParameterKey=SourcePath,UsePreviousValue=true ParameterKey=StackName,ParameterValue=$(STACK_NAME)
 version:
 	echo $(SERVICE_VERSION)
+parameters:
+	@echo '{ "Parameters": {"EnvLabel": "$(ENV_LABEL)","EnvType": "$(ENV_TYPE)","SubSystem": "$(SUB_SYSTEM)","ServiceName": "$(SERVICE_NAME)","ServiceVersion": "$(SERVICE_VERSION)","DockerRepoUrl": "$(ECR_ADDR)","AppPort": "$(APP_PORT)","UrlPattern": "$(URL_PATTERN)","Priority": "$(PRIORITY)","DesiredCount": "$(DESIRED_COUNT)","HealthCheckPath": "$(HEALTH_CHECK_PATH)" } }' > parameters.json
