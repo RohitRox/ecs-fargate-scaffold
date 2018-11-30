@@ -111,8 +111,7 @@ Resources:
           Action: ['sts:AssumeRole']
       Path: /
       Policies:
-      - PolicyName: dummy
-        # NOTE: This is dummy policy for the microservice
+      - # NOTE: This is dummy policy for the microservice
         PolicyDocument:
           Statement:
           - Effect: Allow
@@ -155,7 +154,6 @@ Resources:
               awslogs-group: !Ref LogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: !Ref ServiceName
-
 
   # Create a service discovery service in the private service domain
   # ServiceDiscovery:

@@ -85,20 +85,27 @@ Resources:
             - iam:RemoveRoleFromInstanceProfile
             Effect: Allow
             Resource:
-            - !Sub "arn:aws:iam::*:role/${AWS::StackName}*"
-            - !Sub "arn:aws:iam::*:instance-profile/${AWS::StackName}*"
+            - !Sub "arn:aws:iam::${AWS::AccountId}:role/${AWS::StackName}*"
+            - !Sub "arn:aws:iam::${AWS::AccountId}:role/${EnvLabel}*"
           - Action:
             - ssm:GetParameters
-            - s3:*
             - ecs:*
             - logs:*
             - elasticloadbalancing:*
+            - ec2:*
             Effect: Allow
-            Resource: '*'
-          - Resource: "*"
+            Resource: "*"
+          - Action:
+            - s3:*
             Effect: Allow
-            Action:
-            - iam:PassRole
+            Resource:
+              - !Sub
+                - arn:aws:s3:::${ArtifactStoreS3Location}
+                - ArtifactStoreS3Location: !ImportValue BucketCodePipeline
+          - Action:
+              - iam:PassRole
+            Effect: Allow
+            Resource: !Sub arn:aws:iam::${AWS::AccountId}:role/${EnvLabel}*
         PolicyName: !Join ['-', [!Ref 'AWS::StackName', 'CloudFormationRolePolicy']]
 
   CodeBuildIAMRole:
@@ -151,10 +158,6 @@ Resources:
                   - cloudformation:*
                   - ecs:*
                   - cloudwatch:*
-              - Resource: "*"
-                Effect: Allow
-                Action:
-                  - cloudformation:*
               - Resource: "*"
                 Effect: Allow
                 Action:
