@@ -259,6 +259,8 @@ Resources:
                 - echo "Current Git commit is ${COMMIT}"
                 - WORKDIR=$(pwd)
                 - SERVICE_VERSION=$(make -s version | xargs)
+                - git remote add origin $GIT_REMOTE
+                - git fetch
             build:
               commands:
                 - echo "Buiding image ..."
@@ -286,3 +288,6 @@ Resources:
           Value: !Ref DockerRepoUrl
         - Name: SOURCE_PATH
           Value: !Ref SourcePath
+        - Name: GIT_REMOTE
+          Value: !Sub https://${GitUser}:${GitOauthToken}@github.com/${GitUser}/${GitRepo}.git
+
