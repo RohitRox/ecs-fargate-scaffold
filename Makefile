@@ -28,6 +28,8 @@ build:
 	docker build -t $(SERVICE_NAME) .
 run:
 	docker run -it -p $(APP_PORT):$(APP_PORT) $(SERVICE_NAME):latest
+test:
+	echo "Tests not configured yet so I am just going to pass"
 ecr-push:
 	make build
 	eval `aws ecr get-login --no-include-email --region $(AWS_REGION) --profile $(AWS_PROFILE)`
