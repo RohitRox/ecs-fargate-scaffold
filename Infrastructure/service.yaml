@@ -111,7 +111,8 @@ Resources:
           Action: ['sts:AssumeRole']
       Path: /
       Policies:
-      - # NOTE: This is dummy policy for the microservice
+      - PolicyName: !Sub ${AWS::StackName}-service-policy
+        # NOTE: This is dummy policy for the microservice
         PolicyDocument:
           Statement:
           - Effect: Allow
